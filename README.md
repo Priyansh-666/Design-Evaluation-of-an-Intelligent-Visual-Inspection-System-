@@ -171,12 +171,12 @@ flowchart TD
     end
 
     subgraph STAGE_3["Stage 3: Decision & Actuation"]
-        J -->|FINS UDP Telegram| K[Industrial OMRON PLC]
-        K --> L{Actuation Route}
-        L -->|Defective Flag| M[Pneumatic Tilt Down: Defective Bin]
-        L -->|Size Error Flag| N[Stepper Motor Pivot: Misaligned Bin]
-        L -->|Conforming Flag| O[Conveyor Pass-through: Acceptable Bin]
-        K --> P[PyQt HMI Operator Dashboard + Event Logging]
+        J -->|FINS UDP Telegram| K["Industrial OMRON PLC"]
+        K --> L{"Actuation Route"}
+        L -->|Defective Flag| M["Pneumatic Tilt Down - Defective Bin"]
+        L -->|Size Error Flag| N["Stepper Motor Pivot - Misaligned Bin"]
+        L -->|Conforming Flag| O["Conveyor Pass-through - Acceptable Bin"]
+        K --> P["PyQt HMI Operator Dashboard & Event Logging"]
     end
 ```
 
@@ -190,25 +190,25 @@ flowchart TD
 ```mermaid
 graph LR
     subgraph Optical["Optical Subsystem"]
-        CAM1[Webcam - Front Alignment]
-        CAM2[Baumer Industrial Camera - 1080p]
+        CAM1["Webcam - Front Alignment"]
+        CAM2["Baumer Industrial Camera - 1080p"]
     end
 
     subgraph Compute["Edge Processing Core"]
-        JETSON[NVIDIA Jetson Xavier NX<br/>Ubuntu Linux + JetPack 5.1.1<br/>CUDA 11.4 + TensorRT / PyTorch<br/>PyQt HMI Dashboard]
+        JETSON["NVIDIA Jetson Xavier NX<br/>Ubuntu Linux + JetPack 5.1.1<br/>CUDA 11.4 + TensorRT / PyTorch<br/>PyQt HMI Dashboard"]
     end
 
     subgraph Industrial["PLC & Automation Control"]
-        PLC[OMRON Industrial PLC<br/>Ethernet Interface (UDP Port 9600)<br/>Memory Relay Bits]
-        ACT1[Pneumatic Aligner Cylinder]
-        ACT2[Pneumatic Tilt Actuator]
-        ACT3[Precision Stepper Motor]
-        INDICATOR[3-Color Tower Light<br/>Red=Halted, Amber=Paused, Green=Running]
+        PLC["OMRON Industrial PLC<br/>Ethernet Interface - UDP Port 9600<br/>Memory Relay Bits"]
+        ACT1["Pneumatic Aligner Cylinder"]
+        ACT2["Pneumatic Tilt Actuator"]
+        ACT3["Precision Stepper Motor"]
+        INDICATOR["3-Color Tower Light<br/>Red: Halted, Amber: Paused, Green: Running"]
     end
 
-    CAM1 -- USB Video Stream --> JETSON
-    CAM2 -- GigE / USB3 via NeoAPI --> JETSON
-    JETSON -- FINS Protocol over UDP --> PLC
+    CAM1 -->|USB Video Stream| JETSON
+    CAM2 -->|GigE / USB3 via NeoAPI| JETSON
+    JETSON -->|FINS Protocol over UDP| PLC
     PLC --> ACT1
     PLC --> ACT2
     PLC --> ACT3
